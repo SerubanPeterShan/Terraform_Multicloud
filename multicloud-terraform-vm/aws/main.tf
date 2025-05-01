@@ -3,16 +3,32 @@ provider "aws" {
     region = var.aws_region # The AWS region to deploy resources in, defined as a variable
 }
 
+# Data source to get the latest Amazon Linux 2 AMI
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+  
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+  
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 # Define an EC2 instance resource
 resource "aws_instance" "free_tier_vm" {
-    ami                    = var.ami_id # The Amazon Machine Image (AMI) ID, defined as a variable
+    ami                    = data.aws_ami.amazon_linux_2.id # The Amazon Machine Image (AMI) ID from data source
     instance_type          = "t2.micro" # Instance type, eligible for AWS free tier
-    key_name               = var.key_name # Name of the SSH key pair to access the instance, defined as a variable
+    key_name               = aws_key_pair.deployer_key.key_name # Name of the SSH key pair to access the instance
     vpc_security_group_ids = [aws_security_group.allow_ssh.id] # Attach the security group allowing SSH access
 
     # Add tags to the instance for identification
     tags = {
-        Name = "Terraform-FreeTier-VM" # Tag to identify the instance
+        Name = "tf-aws-vm" # Tag to identify the instance
     }
 }
 
@@ -37,4 +53,9 @@ resource "aws_security_group" "allow_ssh" {
         protocol    = "-1" # Protocol for the rule (-1 means all protocols)
         cidr_blocks = ["0.0.0.0/0"] # Allow traffic to any IP address
     }
+}
+
+resource "aws_key_pair" "deployer_key" {
+  key_name   = var.key_name
+  public_key = file(var.ssh_public_key_path)
 }

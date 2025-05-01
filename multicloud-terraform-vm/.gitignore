@@ -1,3 +1,71 @@
 # Ignore Terraform variable files
 terraform.tfvars
 terraform.tfvars.json
+
+# Local .terraform directories
+**/.terraform/*
+.terraform/
+.terraform.lock.hcl
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfplan
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which are likely to contain sensitive data
+# *.tfvars - already covered above
+*.tfvars.json
+
+# Override files as they're usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Credentials
+*.pem
+*.key
+credentials.json
+account.json
+
+# Cloud provider specific
+# AWS
+.aws/
+aws_credentials
+aws-credentials.json
+
+# Azure
+.azure/
+azure_credentials
+azure-credentials.json
+.azcli/
+
+# GCP
+gcp-credentials.json
+gcp-account.json
+gcp-keyfile.json
+
+# Ignore .env files which might contain sensitive environment variables
+.env
+.envrc
+
+# Logs
+*.log
+
+# Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore any temporary files created by editors or IDEs
+./.terraform

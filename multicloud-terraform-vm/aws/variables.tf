@@ -3,8 +3,9 @@
 # The "description" parameter provides a brief explanation of the variable's purpose.
 # The "default" parameter sets a default value of "us-east-1", which is the AWS region code for US East (N. Virginia).
 variable "aws_region" {
-    description = "AWS region"
-    default     = "us-east-1"
+  description = "AWS region to deploy resources"
+  type        = string
+  default     = "us-east-1"
 }
 
 # Define a variable for the Amazon Machine Image (AMI) ID.
@@ -21,6 +22,12 @@ variable "ami_id" {
 # The "description" parameter explains that the variable represents the name of the SSH key pair.
 # The "type" parameter enforces that the value must be a string.
 variable "key_name" {
-    description = "SSH key pair name"
-    type        = string
+  description = "Name of the AWS key pair to use"
+  type        = string
+}
+
+variable "ssh_public_key_path" {
+  description = "Path to SSH public key"
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
 }
